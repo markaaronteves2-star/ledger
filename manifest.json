@@ -1,0 +1,22 @@
+{
+  "name": "PUP Souvenir Shop Ledger",
+  "short_name": "Shop Ledger",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#faf6ee",
+  "theme_color": "#800000",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "330x312",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

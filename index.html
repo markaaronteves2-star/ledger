@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#800000">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<title>PUP Souvenir Shop Ledger</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="rotate">📱↻ Please rotate your tablet to landscape</div>
+<header><h1><img class="logo" src="logo.png" alt="">PUP Souvenir Shop<span id="branchTag"></span></h1></header>
+<nav id="tabs">
+  <button data-tab="sell" class="active">Sell</button>
+  <button data-tab="dash">Dashboard</button>
+  <button data-tab="items">Items</button>
+  <button data-tab="record">Record</button>
+  <button data-tab="ledger">Ledger</button>
+  <button data-tab="backup">Settings</button>
+</nav>
+<main>
+
+<!-- SELL (POS) -->
+<section id="sell">
+  <div class="pos">
+    <div class="catalog">
+      <div class="hero">
+        <div>
+          <span class="badge">Official PUP Souvenir Shop</span>
+          <h2>Iskolar ng Bayan<br>Merch</h2>
+          <p id="heroInfo"></p>
+          <p id="shopInfo" hidden style="white-space:pre-line;font-weight:600"></p>
+        </div>
+        <div class="herocar" id="heroCar"><span id="heroCap"></span><div id="heroDots"></div></div>
+      </div>
+      <input id="posSearch" class="search" placeholder="🔍 Search products...">
+      <div id="cats" class="chips"></div>
+      <div class="sec-head"><h3>Products</h3><span id="posCount"></span></div>
+      <div id="grid" class="grid"></div>
+    </div>
+
+    <aside class="cart" id="cart">
+      <h3>Current order</h3>
+      <div id="cartLines"></div>
+      <input id="cartNote" placeholder="Customer / note (optional)">
+      <div class="total"><span>Total</span><b id="cartTotal">₱0.00</b></div>
+      <div class="cart-actions">
+        <button id="cartClear">Clear</button>
+        <button id="cartPay" class="primary">Checkout</button>
+      </div>
+      <p id="cartMsg" class="msg"></p>
+    </aside>
+  </div>
+  <button id="cartFab" class="fab">🛒 <span id="fabCount">0</span> · <span id="fabTotal">₱0.00</span></button>
+</section>
+
+<section id="dash" hidden></section>
+
+<section id="items" hidden>
+  <h2>Items &amp; Inventory</h2>
+  <form id="itemForm">
+    <input type="hidden" id="itemId">
+    <div class="photo-row">
+      <img id="iPreview" src="placeholder.jpeg" alt="Product photo">
+      <div class="photo-btns">
+        <label class="btn">📷 Take photo<input id="iCam" type="file" accept="image/*" capture="environment" hidden></label>
+        <label class="btn">🖼 Choose photo<input id="iFile" type="file" accept="image/*" hidden></label>
+        <button type="button" id="iPhotoClear">Remove photo</button>
+      </div>
+    </div>
+    <label>Name <input id="iName" required></label>
+    <label>Category <select id="iCat" required></select></label>
+    <label>Selling price (₱) <input id="iPrice" type="number" min="0" step="0.01" required inputmode="decimal"></label>
+    <label>Cost (₱) <input id="iCost" type="number" min="0" step="0.01" inputmode="decimal"></label>
+    <label><span id="iStockLbl">Opening stock</span> <input id="iStock" type="number" min="0" value="0" inputmode="numeric"></label>
+    <label>Low-stock alert at <input id="iLow" type="number" min="0" value="5" inputmode="numeric"></label>
+    <button class="primary" type="submit">Save item</button>
+    <button type="button" id="iCancel">Clear</button>
+  </form>
+  <h3>Stocks</h3>
+  <input id="itemSearch" placeholder="Search items...">
+  <div id="itemList" class="list"></div>
+</section>
+
+<section id="record" hidden>
+  <h2>Record other entries</h2>
+  <p class="hint">Use <b>Sell</b> for regular sales. Use this for restocks, expenses and other income.</p>
+  <form id="txForm">
+    <label>Type
+      <select id="txType">
+        <option value="restock">Restock (expense, stock in)</option>
+        <option value="expense">Other expense</option>
+        <option value="income">Other income</option>
+        <option value="sale">Manual sale (income, stock out)</option>
+      </select>
+    </label>
+    <label id="itemWrap">Item <select id="txItem"></select></label>
+    <label id="qtyWrap">Quantity <input id="txQty" type="number" min="1" value="1" inputmode="numeric"></label>
+    <label>Amount (₱) <input id="txAmount" type="number" min="0" step="0.01" inputmode="decimal" required></label>
+    <label>Date <input id="txDate" type="date" required></label>
+    <label>Note <input id="txNote" placeholder="optional (supplier, reason)"></label>
+    <button class="primary" type="submit">Save entry</button>
+  </form>
+  <p id="txMsg" class="msg"></p>
+</section>
+
+<section id="ledger" hidden>
+  <h2>Ledger</h2>
+  <div class="row">
+    <label>From <input type="date" id="lFrom"></label>
+    <label>To <input type="date" id="lTo"></label>
+    <label>Type
+      <select id="lType"><option value="">All</option><option>sale</option><option>restock</option><option>expense</option><option>income</option></select>
+    </label>
+  </div>
+  <div class="tablewrap"><table id="lTable"></table></div>
+  <button id="csvBtn">Export CSV</button>
+</section>
+
+<section id="backup" hidden>
+  <h2>Settings</h2>
+
+  <h3>Data backup &amp; device sync</h3>
+  <p class="hint">Data is stored only on this device. To move data between phone and tablet (or tablet to tablet): download a backup, send the file to the other device, load it there, then choose <b>Combine</b> or <b>Replace</b>.</p>
+  <p id="lastBackup" class="hint"></p>
+
+  <div class="fx"><button id="expJson" class="primary">Download backup (.json)</button><button type="button" class="info" aria-label="What is this?" data-tip="Saves a copy of ALL your products, sales, expenses, shop details and logo as a file. Nothing on this device changes. Keep the file somewhere safe.">i</button></div>
+  <div class="fx"><label class="file">Load backup from another device <input type="file" id="impJson" accept=".json"></label><button type="button" class="info" aria-label="What is this?" data-tip="Pick a backup file. You will see a summary first and then choose to Combine or Replace. Nothing changes until you confirm.">i</button></div>
+
+  <div id="importPanel" hidden style="border:2px solid #800000;border-radius:12px;padding:12px;margin:10px 0;background:#fff">
+    <p id="importInfo"></p>
+    <div class="warn">⚠ <b>Replace</b> overwrites everything already on this device with the backup file. <b>Combine</b> permanently adds entries from the file and changes stock levels. Neither can be undone by hand. A safety copy of this device is saved automatically first, and you can bring it back from <b>Backup history</b> below (only the last 3 safety copies are kept).</div>
+    <div class="fx"><button id="impMerge" class="primary">Combine with this device</button><button type="button" class="info" aria-label="What is this?" data-tip="Keeps what is on this device and adds what is missing from the file: new sales, restocks, expenses and products. Stock is adjusted by the new entries only. Duplicates are skipped.">i</button></div>
+    <div class="fx"><button id="impReplace" class="danger">Replace this device's data</button><button type="button" class="info" aria-label="What is this?" data-tip="Erases this device's data and uses the backup file instead. Use this when setting up a new tablet or when the file is the correct, complete copy.">i</button></div>
+    <button id="impCancel">Cancel</button>
+  </div>
+
+  <h3>Backup history <button type="button" class="info" aria-label="What is this?" data-tip="A log of backups, restores and combines on THIS device, plus safety copies saved automatically before each Replace, Combine or Erase. Use Restore to go back to one.">i</button></h3>
+  <div id="historyList" class="list"></div>
+  <p id="bkMsg" class="msg"></p>
+
+  <h3>Shop details <button type="button" class="info" aria-label="What is this?" data-tip="Shown in the app. The branch name appears in the header; address and contact appear on the Sell tab. Saved as you type.">i</button></h3>
+  <label>Branch name <input id="shBranch" maxlength="60" placeholder="e.g. PUP Main (Sta. Mesa)"></label>
+  <p id="branchWarn" class="hint">⚠ No branch name yet. It appears in the header once you enter one.</p>
+  <label>Address <input id="shAddress" maxlength="200" placeholder="Street, building, city"></label>
+  <label>Contact person / number <input id="shContact" maxlength="100"></label>
+  <label>Notes <textarea id="shNotes" rows="3" maxlength="2000" placeholder="Anything else (optional)"></textarea></label>
+
+  <h3>Shop logo <button type="button" class="info" aria-label="What is this?" data-tip="The logo shown in the header and on the Sell tab. A custom logo is saved on this device and included in backups.">i</button></h3>
+  <div class="photo-row">
+    <img id="logoPreview" src="logo.png" alt="Shop logo" style="width:80px;height:80px;object-fit:contain;background:#fff;border-radius:50%">
+    <div class="photo-btns">
+      <label class="btn">Change logo<input id="logoFile" type="file" accept="image/*" hidden></label>
+      <button type="button" id="logoReset">Use default logo</button>
+    </div>
+  </div>
+  <p id="logoMsg" class="msg"></p>
+
+  <div class="fx"><label>Opening cash balance (₱) <input id="opening" type="number" step="0.01" value="0" inputmode="decimal"></label><button type="button" class="info" aria-label="What is this?" data-tip="The cash on hand when you started using the app. It is added to all sales and expenses to compute the cash balance.">i</button></div>
+
+  <div class="fx"><button id="wipe" class="danger">Erase all data</button><button type="button" class="info" aria-label="What is this?" data-tip="Deletes all products, sales and settings on this device. A safety copy is saved first, so you can restore it from Backup history.">i</button></div>
+</section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
